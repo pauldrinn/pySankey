@@ -39,7 +39,7 @@ class LabelMismatch(PySankeyException):
 
 
 def check_data_matches_labels(labels, data, side):
-    if len(labels > 0):
+    if len(labels) > 0:
         if isinstance(data, list):
             data = set(data)
         if isinstance(data, pd.Series):
@@ -57,7 +57,7 @@ def check_data_matches_labels(labels, data, side):
 
 def sankey(left, right, leftWeight=None, rightWeight=None, colorDict=None,
            leftLabels=None, rightLabels=None, aspect=4, rightColor=False,
-           fontsize=14, figureName=None, closePlot=False):
+           fontsize=14, figureName=None, closePlot=False, font_fam='sans-serif'):
     '''
     Make Sankey Diagram showing flow from left-->right
 
@@ -97,7 +97,7 @@ def sankey(left, right, leftWeight=None, rightWeight=None, colorDict=None,
 
     plt.figure()
     plt.rc('text', usetex=False)
-    plt.rc('font', family='serif')
+    plt.rc('font', family=font_fam)
 
     # Create Dataframe
     if isinstance(left, pd.Series):
@@ -123,7 +123,7 @@ def sankey(left, right, leftWeight=None, rightWeight=None, colorDict=None,
     if len(rightLabels) == 0:
         rightLabels = pd.Series(dataFrame.right.unique()).unique()
     else:
-        check_data_matches_labels(leftLabels, dataFrame['right'], 'right')
+        check_data_matches_labels(rightLabels, dataFrame['right'], 'right')
     # If no colorDict given, make one
     if colorDict is None:
         colorDict = {}
@@ -238,6 +238,6 @@ def sankey(left, right, leftWeight=None, rightWeight=None, colorDict=None,
     plt.gca().axis('off')
     plt.gcf().set_size_inches(6, 6)
     if figureName != None:
-        plt.savefig("{}.png".format(figureName), bbox_inches='tight', dpi=150)
+        plt.savefig("{}".format(figureName), bbox_inches='tight', dpi=200)
     if closePlot:
         plt.close()
